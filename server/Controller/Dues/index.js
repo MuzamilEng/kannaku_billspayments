@@ -12,10 +12,15 @@ const postDues = async (req, res) => {
       groupService,
       amount
     });
-
-  const response = await newUser.save();
+try {
+ const response = await newUser.save();
     res.status(201).json(response);
-    console.log(response, "airtime added successfully");
+    console.log(response, "mededoe successfully");
+  console.log('Electricity data saved to the database.');
+  
+} catch (error) {
+  console.log(error);
+}
   } catch (error) {
     res.status(500).json({ error: 'Error creating user.' });
   }
