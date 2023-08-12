@@ -10,7 +10,26 @@ const postDues = async (req, res) => {
       subscription,
       mobileNumber,
       groupService,
-      amount
+      amount,
+      dateTime: 'african/lagos',
+      product_id: '0811117533331111jjgjwhuwdhwdi',
+      transaction_id: '786387r877429jhhi848',
+      transaction_status: 'success',
+      transaction_message: null,
+      transaction_reference: null,
+      costumer_id: '0oo9998622611',
+      customer_name: null,
+      content:{
+        transactions: null,
+        errors: null,
+        unique_id: true,
+        message: null
+      },
+      details: {
+        email: 'sandbox@gmail.com',
+        phone: '0801111111111',
+      }
+
     });
 try {
  const response = await newUser.save();

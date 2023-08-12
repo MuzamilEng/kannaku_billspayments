@@ -18,8 +18,10 @@ const postElectricity = async (req, res) => {
         'secret-key': secretKey,
       },
     });
+    
+   
     // console.log(req.body, "req.body");
-    // console.log('Response from VTPass API:', response.data);
+    // console.log('Response from VTPass API:', response.data?.content?.errors);
   
     // console.log('Electricity data saved to the database.');
     const user = new User({
@@ -27,8 +29,14 @@ const postElectricity = async (req, res) => {
       responseData: response?.data, // Save the entire response data
       // Other relevant fields from req.body
     });
+   
 
     try {
+      if (response?.data?.content && response?.data?.content?.['errors']) {
+        res.status(400).json({ error: response.data.content.errors });
+        console.log(response.data.content);
+        return;
+      }
       await user.save();
       // console.log('Electricity data saved to the database.');
       res.status(201).json({ message: 'Electricity data saved successfully' });

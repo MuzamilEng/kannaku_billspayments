@@ -6,8 +6,8 @@ const User = require('../../models/airtime');
 const postAirtime = async (req, res) => {
   const url = 'https://sandbox.vtpass.com/api/pay'; // Update with vtpass API URL
   const apiKey = '14509672042f290d6a49fd1aa664b6f5'; // Replace with your vtpass API key
-  const secretKey = 'SK_106be5b1491d929c5bffef06b2aa244fb00305d83b0'; // Replace with your vtpass secret key
-  
+  const secretKey = 'SK_106be5b1491d929c5bffef06b2aa244fb00305d83b0';
+
 
   try {
     const response = await axios.post(url, req.body, {
@@ -17,24 +17,26 @@ const postAirtime = async (req, res) => {
         'secret-key': secretKey,
       },
     });
-    // console.log('Response from VTPass API:', response.data);
-  
     const user = new User({
-      // responseData: response?.data?.content?.transactions, // Save the entire response data
-      responseData: response?.data, // Save the entire response data
-      // Other relevant fields from req.body
+      responseData: response?.data,
     });
-
-    await user.save();
-
-    // console.log('Airtime data saved to the database.');
-
-    res.status(201).json({ message: 'Airtime cable data saved successfully' });
-  }  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    try {
+      if (response?.data?.content?.['errors'] == '' || response?.data?.content?.['errors']) {
+        console.log(response.data.content.errors, "airtime added not");
+        res.status(400).json({ error: response.data.content.errors });
+        return;
+      }
+      await user.save();
+      res.status(201).json({ message: 'Airtime data saved successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while saving data.' });
+      return;
+    }
+  } catch (error) {
+    res.status(500).json({ error: error });
   }
 };
+
 
 const getAirtime = async (req, res) => {
   try {

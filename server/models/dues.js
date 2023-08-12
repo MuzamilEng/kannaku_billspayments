@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const dues = new mongoose.Schema({
+    responseData: Object, // Or use appropriate schema type for objects
+
     serviceType: {
         type: String,
     },
@@ -13,11 +15,11 @@ const dues = new mongoose.Schema({
         // unique: true
     },
     mobileNumber: {
-        type: Number,
+        type: String,
         
     },
     amount: {
-        type: Number,
+        type: String,
       
     }
 })
